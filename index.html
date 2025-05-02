@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduLearn</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(5px, -10px) rotate(5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    @keyframes float-reverse {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-5px, -8px) rotate(-3deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .floating-book {
+      animation: float 8s ease-in-out infinite;
+      position: absolute;
+      opacity: 0.6;
+    }
+
+    .floating-book-reverse {
+      animation: float-reverse 9s ease-in-out infinite;
+      position: absolute;
+      opacity: 0.6;
+    }
+
+    .floating-shape {
+      animation: float 12s ease-in-out infinite;
+      position: absolute;
+      opacity: 0.7;
+    }
+
+    .bg-purple-gradient {
+      background: linear-gradient(135deg, #4a1d96 0%, #7e22ce 50%, #6b21a8 100%);
+    }
+
+    .login-container {
+      background-color: rgba(91, 33, 182, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .input-field {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 8px;
+      padding: 12px 16px 12px 40px;
+      width: 100%;
+      transition: all 0.3s;
+    }
+
+    .input-field:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.5);
+    }
+
+    .input-field::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .signin-button {
+      background-color: #8b5cf6;
+      color: white;
+      border-radius: 8px;
+      padding: 12px;
+      width: 100%;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .signin-button:hover {
+      background-color: #7c3aed;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+
+    .provider-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .provider-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Splash screen styles */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4a1d96 0%, #7e22ce 50%, #6b21a8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .splash-logo {
+      animation: scaleUp 0.8s ease-out forwards, pulse 2s ease-in-out infinite;
+    }
+
+    .splash-text {
+      animation: slideUp 0.8s ease-out forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+    }
+
+    .splash-loader {
+      margin-top: 30px;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: rotate 1s linear infinite;
+    }
+
+    .splash-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      opacity: 0.6;
+      animation: float 15s infinite linear;
+    }
+  </style>
+</head>
+<body class="bg-purple-gradient">
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-particles">
+      <!-- Particles for background effect -->
+      <div class="particle" style="top: 15%; left: 10%; animation-duration: 20s;">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <circle cx="15" cy="15" r="15" fill="white" fill-opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="particle" style="top: 25%; right: 15%; animation-duration: 25s;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect width="20" height="20" fill="white" fill-opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="particle" style="bottom: 20%; left: 20%; animation-duration: 18s;">
+        <svg width="25" height="25" viewBox="0 0 25 25" fill="none">
+          <polygon points="12.5,0 25,25 0,25" fill="white" fill-opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="particle" style="top: 40%; right: 25%; animation-duration: 22s;">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <circle cx="7.5" cy="7.5" r="7.5" fill="white" fill-opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="particle" style="bottom: 30%; right: 10%; animation-duration: 19s;">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect width="18" height="18" fill="white" fill-opacity="0.1"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="splash-logo mb-4">
+      <div class="flex items-center">
+        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-3">
+          <i class="fas fa-graduation-cap text-purple-700 text-4xl"></i>
+        </div>
+        <div class="text-white text-5xl font-bold">EduLearn</div>
+      </div>
+    </div>
+
+    <div class="splash-text text-white text-xl font-light">Your Classroom, Reimagined</div>
+
+    <div class="splash-loader mt-8"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content" class="min-h-screen w-full relative overflow-hidden flex items-center justify-center" style="display: none;">
+    <!-- 3D Background with books and education elements -->
+    <div class="absolute inset-0 perspective-1000">
+      <!-- 3D Books -->
+      <div class="book-3d" style="top: 15%; left: 10%; transform: rotateX(15deg) rotateY(-20deg) rotateZ(-5deg);">
+        <div class="book-cover"></div>
+        <div class="book-spine"></div>
+        <div class="book-pages"></div>
+      </div>
+
+      <div class="book-3d book-blue" style="top: 25%; right: 15%; transform: rotateX(10deg) rotateY(25deg) rotateZ(5deg);">
+        <div class="book-cover"></div>
+        <div class="book-spine"></div>
+        <div class="book-pages"></div>
+      </div>
+
+      <div class="book-3d book-green" style="bottom: 20%; left: 20%; transform: rotateX(-5deg) rotateY(-15deg) rotateZ(8deg);">
+        <div class="book-cover"></div>
+        <div class="book-spine"></div>
+        <div class="book-pages"></div>
+      </div>
+
+      <!-- Floating Education Elements -->
+      <div class="edu-element pencil" style="top: 18%; right: 25%;"></div>
+      <div class="edu-element calculator" style="bottom: 25%; right: 10%;"></div>
+      <div class="edu-element globe" style="top: 40%; left: 15%;"></div>
+      <div class="edu-element atom" style="bottom: 30%; left: 30%;"></div>
+
+      <!-- Mathematical Formulas -->
+      <div class="formula" style="top: 10%; left: 40%;">E = mc²</div>
+      <div class="formula" style="top: 60%; right: 20%;">a² + b² = c²</div>
+      <div class="formula" style="bottom: 15%; left: 35%;">F = G(m₁m₂/r²)</div>
+
+      <!-- Geometric Shapes -->
+      <div class="geo-shape cube" style="top: 20%; right: 40%;"></div>
+      <div class="geo-shape pyramid" style="bottom: 35%; right: 30%;"></div>
+      <div class="geo-shape sphere" style="top: 50%; left: 25%;"></div>
+
+      <!-- Light Effects -->
+      <div class="light-beam" style="top: 0; left: 30%;"></div>
+      <div class="light-beam" style="top: 20%; right: 10%;"></div>
+
+      <!-- Particles -->
+      <div id="particles-js" class="absolute inset-0"></div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="login-container w-full max-w-md p-8 mx-4">
+      <div class="flex justify-center mb-6">
+        <div class="text-white text-2xl font-bold flex items-center">
+          <i class="fas fa-graduation-cap mr-2"></i>
+          EduLearn
+        </div>
+      </div>
+
+      <h1 class="text-white text-2xl font-bold text-center mb-2">Welcome Back</h1>
+      <p class="text-white text-opacity-80 text-center text-sm mb-8">Sign in to continue your learning journey</p>
+
+      <form>
+        <div class="mb-4">
+          <label for="email" class="block text-white text-opacity-90 text-sm mb-2">Email</label>
+          <div class="relative">
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70">
+              <i class="far fa-envelope"></i>
+            </div>
+            <input
+              type="email"
+              id="email"
+              class="input-field"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label for="password" class="text-white text-opacity-90 text-sm">Password</label>
+            <a href="#" class="text-white text-opacity-80 text-sm hover:text-opacity-100">Forgot password?</a>
+          </div>
+          <div class="relative">
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input
+              type="password"
+              id="password"
+              class="input-field"
+              placeholder="Enter your password"
+              required
+            />
+            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-opacity-70 cursor-pointer" onclick="togglePassword()">
+              <i class="far fa-eye" id="password-toggle"></i>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="signin-button">
+          Sign in
+        </button>
+      </form>
+
+      <div class="my-6 text-center">
+        <p class="text-white text-opacity-80 text-sm mb-4">or continue with</p>
+        <div class="grid grid-cols-2 gap-4">
+          <button class="provider-button">
+            <i class="fab fa-google mr-2"></i> Google
+          </button>
+          <button class="provider-button">
+            <i class="fab fa-microsoft mr-2"></i> Microsoft
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center mt-6">
+        <p class="text-white text-opacity-70 text-sm">
+          Don't have an account?
+          <a href="#" class="text-white hover:underline">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show splash screen for 2.5 seconds then fade to main content
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const splashScreen = document.getElementById('splash-screen');
+        const mainContent = document.getElementById('main-content');
+
+        splashScreen.style.opacity = '0';
+        mainContent.style.display = 'flex';
+
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 500);
+      }, 2500);
+    });
+
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('password-toggle');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.classList.remove('fa-eye');
+        passwordToggle.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        passwordToggle.classList.remove('fa-eye-slash');
+        passwordToggle.classList.add('fa-eye');
+      }
+    }
+  </script>
+</body>
+</html>
