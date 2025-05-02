@@ -6,6 +6,12 @@ import Link from 'next/link';
 // Course Card Component
 const CourseCard = ({ course }) => {
   const [expanded, setExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('timeline');
+
+  // Animation classes for the expanded content
+  const expandedContentClasses = expanded
+    ? "max-h-[800px] opacity-100 transition-all duration-500 ease-in-out"
+    : "max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out";
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
@@ -61,7 +67,7 @@ const CourseCard = ({ course }) => {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-purple-600 h-2 rounded-full"
+              className="bg-purple-600 h-2 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${course.progress}%` }}
             ></div>
           </div>
@@ -70,66 +76,100 @@ const CourseCard = ({ course }) => {
         {/* Expand/Collapse Button */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full text-center text-purple-600 hover:text-purple-800 text-sm font-medium focus:outline-none"
+          className="w-full py-2 px-4 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-600 hover:text-purple-800 text-sm font-medium focus:outline-none transition-all duration-300 flex items-center justify-center"
         >
-          {expanded ? 'Show Less' : 'Show More'}
-          <i className={`fas fa-chevron-${expanded ? 'up' : 'down'} ml-1`}></i>
+          {expanded ? 'Show Less' : 'Course Details'}
+          <i className={`fas fa-chevron-${expanded ? 'up' : 'down'} ml-2 transition-transform duration-300 ${expanded ? 'rotate-180' : 'rotate-0'}`}></i>
         </button>
 
         {/* Expanded Content */}
-        {expanded && (
+        <div className={expandedContentClasses}>
           <div className="mt-4 pt-4 border-t border-gray-100">
-            {/* Course Timeline */}
-            <div className="mb-4">
-              <h4 className="font-medium text-gray-800 mb-2">Course Timeline</h4>
-              <div className="space-y-3">
-                {course.timeline.map((item, index) => (
-                  <div key={index} className="flex">
-                    <div className="w-10 flex-shrink-0">
-                      <div className="w-4 h-4 rounded-full bg-purple-200 border-2 border-purple-600 mx-auto"></div>
-                      {index < course.timeline.length - 1 && (
-                        <div className="w-0.5 h-full bg-purple-200 mx-auto"></div>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{item.title}</p>
-                      <p className="text-xs text-gray-500">{item.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Tabs Navigation */}
+            <div className="flex border-b mb-4">
+              <button
+                onClick={() => setActiveTab('timeline')}
+                className={`px-4 py-2 text-sm font-medium ${activeTab === 'timeline' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <i className="fas fa-calendar-alt mr-2"></i>
+                Timeline
+              </button>
+              <button
+                onClick={() => setActiveTab('announcements')}
+                className={`px-4 py-2 text-sm font-medium ${activeTab === 'announcements' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <i className="fas fa-bullhorn mr-2"></i>
+                Announcements
+              </button>
+              <button
+                onClick={() => setActiveTab('peers')}
+                className={`px-4 py-2 text-sm font-medium ${activeTab === 'peers' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <i className="fas fa-users mr-2"></i>
+                Peers
+              </button>
             </div>
 
-            {/* Announcements */}
-            <div className="mb-4">
-              <h4 className="font-medium text-gray-800 mb-2">Announcements</h4>
-              <div className="space-y-3">
-                {course.announcements.map((announcement, index) => (
-                  <div key={index} className="bg-gray-50 p-3 rounded-lg">
-                    <p className="text-sm font-medium">{announcement.title}</p>
-                    <p className="text-xs text-gray-500 mb-1">{announcement.date}</p>
-                    <p className="text-sm text-gray-600">{announcement.content}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Peers */}
-            <div>
-              <h4 className="font-medium text-gray-800 mb-2">Assigned Peers</h4>
-              <div className="flex flex-wrap">
-                {course.peers.map((peer, index) => (
-                  <div key={index} className="flex items-center mr-4 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
-                      <i className="fas fa-user text-gray-500 text-xs"></i>
+            {/* Tab Content */}
+            <div className="transition-opacity duration-300">
+              {/* Course Timeline */}
+              {activeTab === 'timeline' && (
+                <div className="space-y-3 animate-fadeIn">
+                  {course.timeline.map((item, index) => (
+                    <div key={index} className="flex">
+                      <div className="w-10 flex-shrink-0">
+                        <div className="w-4 h-4 rounded-full bg-purple-200 border-2 border-purple-600 mx-auto"></div>
+                        {index < course.timeline.length - 1 && (
+                          <div className="w-0.5 h-full bg-purple-200 mx-auto"></div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{item.title}</p>
+                        <p className="text-xs text-gray-500">{item.date}</p>
+                      </div>
                     </div>
-                    <span className="text-sm">{peer}</span>
+                  ))}
+                </div>
+              )}
+
+              {/* Announcements */}
+              {activeTab === 'announcements' && (
+                <div className="space-y-3 animate-fadeIn">
+                  {course.announcements.length > 0 ? (
+                    course.announcements.map((announcement, index) => (
+                      <div key={index} className="bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                        <p className="text-sm font-medium">{announcement.title}</p>
+                        <p className="text-xs text-gray-500 mb-1">{announcement.date}</p>
+                        <p className="text-sm text-gray-600">{announcement.content}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-6 text-gray-500">
+                      <i className="fas fa-bell-slash text-2xl mb-2"></i>
+                      <p>No announcements yet</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Peers */}
+              {activeTab === 'peers' && (
+                <div className="animate-fadeIn">
+                  <div className="flex flex-wrap">
+                    {course.peers.map((peer, index) => (
+                      <div key={index} className="flex items-center mr-4 mb-3 bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                          <i className="fas fa-user text-gray-500 text-xs"></i>
+                        </div>
+                        <span className="text-sm">{peer}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
