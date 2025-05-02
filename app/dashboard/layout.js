@@ -27,7 +27,6 @@ export default function DashboardLayout({ children }) {
     { icon: 'fas fa-tasks', label: 'Assignments', path: '/dashboard/assignments' },
     { icon: 'fas fa-chart-bar', label: 'Grades', path: '/dashboard/grades' },
     { icon: 'fas fa-calendar-alt', label: 'Calendar', path: '/dashboard/calendar' },
-    { icon: 'fas fa-users', label: 'Classmates', path: '/dashboard/classmates' },
     { icon: 'fas fa-comment-alt', label: 'Messages', path: '/dashboard/messages' },
     { icon: 'fas fa-bell', label: 'Notifications', path: '/dashboard/notifications' },
   ];

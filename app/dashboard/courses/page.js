@@ -10,8 +10,8 @@ const CourseCard = ({ course }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
       {/* Course Header with Image */}
-      <div 
-        className="h-40 bg-cover bg-center relative" 
+      <div
+        className="h-40 bg-cover bg-center relative"
         style={{ backgroundImage: `url(${course.image})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
@@ -23,7 +23,7 @@ const CourseCard = ({ course }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Course Content */}
       <div className="p-4">
         {/* Faculty Info */}
@@ -36,7 +36,7 @@ const CourseCard = ({ course }) => {
             <p className="font-medium">{course.instructor}</p>
           </div>
         </div>
-        
+
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-2 mb-4">
           <button className="flex flex-col items-center justify-center p-2 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
@@ -52,7 +52,7 @@ const CourseCard = ({ course }) => {
             <span className="text-xs text-gray-700">Lectures</span>
           </button>
         </div>
-        
+
         {/* Progress */}
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-1">
@@ -60,22 +60,22 @@ const CourseCard = ({ course }) => {
             <span className="font-medium">{course.progress}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-purple-600 h-2 rounded-full" 
+            <div
+              className="bg-purple-600 h-2 rounded-full"
               style={{ width: `${course.progress}%` }}
             ></div>
           </div>
         </div>
-        
+
         {/* Expand/Collapse Button */}
-        <button 
+        <button
           onClick={() => setExpanded(!expanded)}
           className="w-full text-center text-purple-600 hover:text-purple-800 text-sm font-medium focus:outline-none"
         >
-          {expanded ? 'Show Less' : 'Show More'} 
+          {expanded ? 'Show Less' : 'Show More'}
           <i className={`fas fa-chevron-${expanded ? 'up' : 'down'} ml-1`}></i>
         </button>
-        
+
         {/* Expanded Content */}
         {expanded && (
           <div className="mt-4 pt-4 border-t border-gray-100">
@@ -99,7 +99,7 @@ const CourseCard = ({ course }) => {
                 ))}
               </div>
             </div>
-            
+
             {/* Announcements */}
             <div className="mb-4">
               <h4 className="font-medium text-gray-800 mb-2">Announcements</h4>
@@ -113,10 +113,10 @@ const CourseCard = ({ course }) => {
                 ))}
               </div>
             </div>
-            
+
             {/* Peers */}
             <div>
-              <h4 className="font-medium text-gray-800 mb-2">Classmates</h4>
+              <h4 className="font-medium text-gray-800 mb-2">Assigned Peers</h4>
               <div className="flex flex-wrap">
                 {course.peers.map((peer, index) => (
                   <div key={index} className="flex items-center mr-4 mb-2">
@@ -164,13 +164,13 @@ export default function CoursesPage() {
         { title: 'Object-Oriented Programming', date: 'Week 7' }
       ],
       announcements: [
-        { 
-          title: 'Midterm Exam Schedule', 
+        {
+          title: 'Midterm Exam Schedule',
           date: '2 days ago',
           content: 'The midterm exam will be held on October 15th. Please review chapters 1-5.'
         },
-        { 
-          title: 'Project Groups', 
+        {
+          title: 'Project Groups',
           date: '1 week ago',
           content: 'Project groups have been assigned. Check the course portal for your team members.'
         }
@@ -191,8 +191,8 @@ export default function CoursesPage() {
         { title: 'Series and Sequences', date: 'Week 7' }
       ],
       announcements: [
-        { 
-          title: 'Office Hours Change', 
+        {
+          title: 'Office Hours Change',
           date: '3 days ago',
           content: 'Office hours will be moved to Thursdays 2-4 PM starting next week.'
         }
@@ -213,13 +213,13 @@ export default function CoursesPage() {
         { title: 'Momentum', date: 'Week 7' }
       ],
       announcements: [
-        { 
-          title: 'Lab Equipment', 
+        {
+          title: 'Lab Equipment',
           date: '1 day ago',
           content: 'New lab equipment has arrived. We will be using it in next week\'s lab session.'
         },
-        { 
-          title: 'Study Group', 
+        {
+          title: 'Study Group',
           date: '5 days ago',
           content: 'A study group will meet in the library on Wednesdays at 6 PM.'
         }
@@ -240,8 +240,8 @@ export default function CoursesPage() {
         { title: 'Dialogue', date: 'Week 7' }
       ],
       announcements: [
-        { 
-          title: 'Guest Speaker', 
+        {
+          title: 'Guest Speaker',
           date: '4 days ago',
           content: 'We will have a guest speaker, novelist Mark Johnson, on Friday.'
         }
@@ -252,7 +252,7 @@ export default function CoursesPage() {
 
   // Search functionality
   const [searchTerm, setSearchTerm] = useState('');
-  const filteredCourses = courses.filter(course => 
+  const filteredCourses = courses.filter(course =>
     course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     course.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
